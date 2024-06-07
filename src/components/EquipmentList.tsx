@@ -3,7 +3,7 @@ import { EquipmentItem } from "../models/EquipmentItem";
 import { formatCurrency } from "../services/Utilities";
 
 interface Props {
-    equipmentList: EquipmentItem[];
+    readonly equipmentList: EquipmentItem[];
 }
 
 export function EquipmentList(props: Props) {

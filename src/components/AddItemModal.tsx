@@ -5,16 +5,16 @@ import { getTotalEncumberence } from "../services/Utilities";
 
 interface Props {
     readonly equipmentList: EquipmentItem[];
-    readonly modal : boolean;
-    readonly setModal : (modal : boolean) => void;
-    readonly addItem : (item : EquipmentItem | undefined, quantity : number) => void;
+    readonly modal: boolean;
+    readonly setModal: (modal: boolean) => void;
+    readonly addItem: (item: EquipmentItem | undefined, quantity: number) => void;
 }
 
 function onlyUnique(value: string, index: number, array: string[]) {
     return array.indexOf(value) === index;
 }
 
-export function AddItemModal(props : Props) {
+export function AddItemModal(props: Props) {
 
     const [categories, setCategories] = React.useState<string[]>([]);
     const [items, setItems] = React.useState<string[]>([]);
@@ -51,59 +51,59 @@ export function AddItemModal(props : Props) {
         }
         setCategory(categories.length > 0 ? categories[0] : undefined);
     }, [props.modal, categories]);
-    
+
     function addItem() {
         props.addItem(item, quantity);
     }
 
     return (
         <Modal isOpen={props.modal} backdrop="static">
-        <ModalHeader>Add Item Of Equipment</ModalHeader>
-        <ModalBody>
-            <Form>
-                <FormGroup>
-                    <Label for="categorySelect">Category</Label>
-                    <Input type="select" id="categorySelect" name="categorySelect" value={category} onChange={e => setCategory(e.currentTarget.value)}>
-                        {categories.map((category, index) => (
-                            <option key={index}>{category}</option>
-                        ))}
-                    </Input>
-                </FormGroup>
-                <FormGroup>
-                    <Label for="itemSelect">Item</Label>
-                    <Input type="select" id="itemSelect" name="itemSelect" value={item?.name} onChange={e => setItem(props.equipmentList.find(i => i.name === e.currentTarget.value))}>
-                        {items.map((item, index) => (
-                            <option key={index}>{item}</option>
-                        ))}
-                    </Input>
-                </FormGroup>
-                <FormGroup>
-                    <Label for="quantityStaticOrSelect">Quantity</Label>
-                    {
-                        item?.costInGoldPieces && item?.bundleSize
-                            ? (
-                                <Input type="select" id="quantityStaticOrSelect" name="quantityStaticOrSelect" value={quantity} onChange={e => setQuantity(parseInt(e.currentTarget.value, 10))}>
-                                    <option>1</option>
-                                    <option>{item.bundleSize}</option>
-                                </Input>
-                            )
-                            : <Input plaintext readOnly id="quantityStaticOrSelect" name="quantityStaticOrSelect" value={quantity} />
-                    }
-                </FormGroup>
-                <FormGroup>
-                    <Label for="costStatic">Cost (gp)</Label>
-                    <Input plaintext readOnly id="costStatic" name="costStatic" value={quantity === 1 ? item?.costInGoldPieces : item?.bundleCostInGoldPieces} />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="encumberenceStatic">Encumberance (cn)</Label>
-                    <Input plaintext readOnly id="encumberenceStatic" name="encumberenceStatic" value={getTotalEncumberence(item, quantity, false)} />
-                </FormGroup>
-            </Form>
-        </ModalBody >
-        <ModalFooter>
-            <Button color="success" onClick={addItem}>Add Item</Button>
-            <Button color="danger" onClick={() => props.setModal(false)}>Cancel</Button>
-        </ModalFooter>
-    </Modal >        
+            <ModalHeader>Add Item Of Equipment</ModalHeader>
+            <ModalBody>
+                <Form>
+                    <FormGroup>
+                        <Label for="categorySelect">Category</Label>
+                        <Input type="select" id="categorySelect" name="categorySelect" value={category} onChange={e => setCategory(e.currentTarget.value)}>
+                            {categories.map((category, index) => (
+                                <option key={index}>{category}</option>
+                            ))}
+                        </Input>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="itemSelect">Item</Label>
+                        <Input type="select" id="itemSelect" name="itemSelect" value={item?.name} onChange={e => setItem(props.equipmentList.find(i => i.name === e.currentTarget.value))}>
+                            {items.map((item, index) => (
+                                <option key={index}>{item}</option>
+                            ))}
+                        </Input>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="quantityStaticOrSelect">Quantity</Label>
+                        {
+                            item?.costInGoldPieces && item?.bundleSize
+                                ? (
+                                    <Input type="select" id="quantityStaticOrSelect" name="quantityStaticOrSelect" value={quantity} onChange={e => setQuantity(parseInt(e.currentTarget.value, 10))}>
+                                        <option>1</option>
+                                        <option>{item.bundleSize}</option>
+                                    </Input>
+                                )
+                                : <Input plaintext readOnly id="quantityStaticOrSelect" name="quantityStaticOrSelect" value={quantity} />
+                        }
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="costStatic">Cost (gp)</Label>
+                        <Input plaintext readOnly id="costStatic" name="costStatic" value={quantity === 1 ? item?.costInGoldPieces : item?.bundleCostInGoldPieces} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="encumberenceStatic">Encumberance (cn)</Label>
+                        <Input plaintext readOnly id="encumberenceStatic" name="encumberenceStatic" value={getTotalEncumberence(item, quantity, false)} />
+                    </FormGroup>
+                </Form>
+            </ModalBody >
+            <ModalFooter>
+                <Button color="success" onClick={addItem}>Add Item</Button>
+                <Button color="danger" onClick={() => props.setModal(false)}>Cancel</Button>
+            </ModalFooter>
+        </Modal >
     );
 }

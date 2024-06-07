@@ -6,6 +6,7 @@ import './App.css';
 import { EquipmentList } from './EquipmentList';
 import { Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 import { EquipmentLoadout } from './EquipmentLoadout';
+import { CharacterCreator } from './CharacterCreator';
 
 function App() {
 
@@ -26,10 +27,13 @@ function App() {
             </h1>
             <Nav tabs>
                 <NavItem>
-                    <NavLink onClick={() => {setActiveTab(1)}} active={activeTab === 1}>Create Equipment Loadout</NavLink>
+                    <NavLink onClick={() => { setActiveTab(1) }} active={activeTab === 1}>Create Equipment Loadout</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink onClick={() => {setActiveTab(2)}} active={activeTab === 2}>Full Equipment List</NavLink>
+                    <NavLink onClick={() => { setActiveTab(2) }} active={activeTab === 2}>Full Equipment List</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink onClick={() => { setActiveTab(3) }} active={activeTab === 3}>Character Creator</NavLink>
                 </NavItem>
             </Nav>
             <TabContent activeTab={activeTab}>
@@ -38,6 +42,9 @@ function App() {
                 </TabPane>
                 <TabPane tabId={2}>
                     <EquipmentList equipmentList={equipmentList} />
+                </TabPane>
+                <TabPane tabId={3}>
+                    <CharacterCreator />
                 </TabPane>
             </TabContent>
         </div>

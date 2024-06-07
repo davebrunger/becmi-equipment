@@ -57,3 +57,25 @@ export function formatCurrency(costInGoldCoins: number | undefined) {
     }
     return `${Math.ceil(costInGoldCoins * 100)}cp`;
 }
+
+export function shuffle<T>(source: readonly T[]) {
+    const result = [...source];
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+}
+
+export function mergeRecords<T extends string | number | symbol, U>(source: Record<T, U>, record: Record<T, U>, merge: (a: U, b: U) => U) {
+    return Object.keys(source).reduce(
+        (a, b) => { 
+            const c = b as T; 
+            return { ...a, [c] : merge(source[c], record[c])}
+        }, 
+        {} as Record<T, U>); 
+}
+
+export function addRecords<T extends string | number | symbol>(source: Record<T, number>, records: Record<T, number>) {
+    return mergeRecords(source, records, (a, b) => a + b);
+}

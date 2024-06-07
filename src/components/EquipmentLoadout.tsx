@@ -5,6 +5,7 @@ import { EquipmentLoadoutList } from "./EquipmentLoadoutList";
 import { EquipmentLoadoutItem } from "../models/EquipmentLoadoutItem";
 import { AddItemModal } from "./AddItemModal";
 import { getNormalSpeedInFeetPerTurn, getTotalCostInGoldPieces, getTotalEncumberence } from "../services/Utilities";
+import { save as saveCsv, load as loadCsv } from "../services/EquipmentLoadoutService";
 
 interface Props {
     readonly equipmentList: EquipmentItem[];
@@ -43,15 +44,15 @@ export function EquipmentLoadout(props: Props) {
             quantity: newQuantity,
             costInGoldPieces: getTotalCostInGoldPieces(item, newQuantity),
             encumberanceInCoins: getTotalEncumberence(item, newQuantity, newWorn),
-            worn : newWorn
+            worn: newWorn
         }
         const newLoadout = currentItem
             ? equipmentLoadout.map(e => e.item.name === item.name ? newItem : e)
             : [...equipmentLoadout, newItem];
         setEquipmentLoadout(newLoadout);
-     }
+    }
 
-     function removeItem(itemName: string) {
+    function removeItem(itemName: string) {
         const newLoadout = equipmentLoadout.filter(i => i.item.name !== itemName);
         setEquipmentLoadout(newLoadout);
     }
@@ -76,10 +77,26 @@ export function EquipmentLoadout(props: Props) {
         const newItem = {
             ...currentItem,
             encumberanceInCoins: getTotalEncumberence(currentItem.item, currentItem.quantity, newWorn),
-            worn : newWorn
+            worn: newWorn
         }
         const newLoadout = equipmentLoadout.map(i => i.item.name === itemName ? newItem : i);
         setEquipmentLoadout(newLoadout);
+    }
+
+    async function save() {
+        await saveCsv(equipmentLoadout);
+        alert("Saved");
+    }
+
+    async function load() {
+        if (equipmentLoadout.length > 0 && !window.confirm("This will replace the current loadout. Are you sure you want to continue?")) {
+            return;
+        }
+        const data = await loadCsv(props.equipmentList);
+        if (!data) {
+            return;
+        }
+        setEquipmentLoadout(data);   
     }
 
     return (
@@ -87,7 +104,13 @@ export function EquipmentLoadout(props: Props) {
             <div>
                 <Row className="row-cols-auto" style={{ paddingTop: "8px" }}>
                     <Col>
+                        <Button color="warning" onClick={load}>Load Loadout</Button>
+                    </Col>
+                    <Col>
                         <Button color="primary" onClick={() => setModal(true)}>Add Item</Button>
+                    </Col>
+                    <Col>
+                        <Button color="success" onClick={save} disabled={equipmentLoadout.length === 0}>Save Loadout</Button>
                     </Col>
                     <Col>
                         <Button color="danger" onClick={() => { if (window.confirm("Are you sure?")) { setEquipmentLoadout([]); } }}>Clear Items</Button>
