@@ -104,7 +104,7 @@ export function GenerateAbilityScores(props: Props) {
                 <Col>
                     <Button color="warning" onClick={reset}>Reset</Button>
                 </Col>
-                {statTotal === 63 ? <Col><Button color="success" onClick={() => props.next(addScores())} >Choose Species</Button></Col> : <></>}
+                {statTotal === 63 ? <Col><Button color="success" onClick={() => props.next(addScores())} >Choose Race</Button></Col> : <></>}
             </Row>
         </>
     );

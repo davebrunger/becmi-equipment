@@ -67,7 +67,7 @@ export function shuffle<T>(source: readonly T[]) {
     return result;
 }
 
-export function mergeRecords<T extends string | number | symbol, U>(source: Record<T, U>, record: Record<T, U>, merge: (a: U, b: U) => U) {
+export function mergeRecords<T extends string | number | symbol, U>(source: Partial<Record<T, U>>, record: Partial<Record<T, U>>, merge: (a?: U, b?: U) => U) {
     return Object.keys(source).reduce(
         (a, b) => { 
             const c = b as T; 
@@ -76,6 +76,6 @@ export function mergeRecords<T extends string | number | symbol, U>(source: Reco
         {} as Record<T, U>); 
 }
 
-export function addRecords<T extends string | number | symbol>(source: Record<T, number>, records: Record<T, number>) {
-    return mergeRecords(source, records, (a, b) => a + b);
+export function addRecords<T extends string | number | symbol>(source: Partial<Record<T, number>>, records: Partial<Record<T, number>>) {
+    return mergeRecords(source, records, (a, b) => (a ?? 0) + (b ?? 0));
 }

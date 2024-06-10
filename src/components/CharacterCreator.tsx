@@ -18,7 +18,7 @@ export function CharacterCreator() {
         case "Generate Ability Scores":
             return <GenerateAbilityScores abilityScores={abilityScores} setAbilityScores={setAbilityScores} next={abilityScores => {setAbilityScores(abilityScores); setStage("Choose Race")}} />;
         case "Choose Race" :
-            return <ChooseRace abilityScores={abilityScores} race={race} setRace={setRace} />;
+            return <ChooseRace abilityScores={abilityScores} race={race} setRace={setRace} next={abilityScores => {setAbilityScores(abilityScores); setStage("Choose Class")}} />;
         default:
             return <h1>Not yet implemented</h1>;
     }

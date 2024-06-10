@@ -1,4 +1,4 @@
-import { shuffle } from "../services/Utilities";
+import { mergeRecords, shuffle } from "../services/Utilities";
 
 export const abilities = ["Strength", "Intelligence", "Wisdom", "Dexterity", "Constitution", "Charisma"] as const;
 export type Ability = typeof abilities[number];
@@ -19,4 +19,8 @@ export function generateAbilityScores() : AbilityScores
     };
     const isValid = Object.values(result).every(v => v >= 4);
     return isValid ? result : generateAbilityScores();
+}
+
+export function addModifiers(abilityScores: AbilityScores, modifiers: Partial<AbilityScores>) : AbilityScores {
+    return mergeRecords(abilityScores, modifiers, (a, b) => Math.max(3, Math.min(18, (a ?? 0)+ (b ?? 0))));
 }
